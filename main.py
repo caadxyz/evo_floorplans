@@ -247,7 +247,7 @@ def evaluate_all(genomes):
 
 if __name__ == '__main__':
     cores = 1
-    generations = 100
+    generations = 1
 
     if len(sys.argv) > 1:
         out_root = sys.argv[1]
@@ -273,8 +273,11 @@ if __name__ == '__main__':
     out_dir = os.path.join(out_root, "out/school_{:%B_%d_%Y_%H-%M}".format(datetime.now()))
     assert not os.path.exists(out_dir)
     os.makedirs(out_dir)
+
+    """
     with open(os.path.join(out_dir, 'weights.txt'), 'wb') as weights_file:
         weights_file.write(str(weights))
+    """
 
     winner = pop.statistics.best_genome()
     pickle.dump(winner, open(os.path.join(out_dir,'winner_genome.p'), 'wb'))
@@ -288,10 +291,13 @@ if __name__ == '__main__':
     view.draw_floorplan(floorplan)
     view.save(os.path.join(out_dir, 'school_winner.png'))
     plot_stats(pop.statistics, filename=os.path.join(out_dir, 'avg_fitness.svg'))
-    plot_species(pop.statistics, filename=os.path.join(out_dir, 'speciation.svg'))
+
+    # todo mahaidong
+    # plot_species(pop.statistics, filename=os.path.join(out_dir, 'speciation.svg'))
 
     with open(os.path.join(out_dir,'fitness.txt'), 'w') as fitness_file:
         fitness_file.write(str(winner.fitness))
 
     print('Number of evaluations: {0}'.format(pop.total_evaluations))
-    # view.hold()
+
+    view.hold()

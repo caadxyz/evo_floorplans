@@ -104,7 +104,7 @@ def toilet_dist(floor, path_dists, paths):
     # for load, path in pathing.closest_paths(floor, path_dists, paths, vert_options=toilet_centers):
     #     total_path_length += load * path_length(floor, path)
     #     n += load
-    foo = mean(v/floor.room_sizes[ctr[c]] for c, v in ppt.items())
+    foo = mean( list(v/floor.room_sizes[ctr[c]] for c, v in ppt.items()) )
     return (total_path_length / n), foo
 
 

@@ -1,7 +1,7 @@
 pygame
-networkx
-box2d
+networkx==1.9
+box2d: brew install swig, pip install box2d-python, pip install box2d
 pyhull
 pyvoro
 pyclipper
-neat-python==0.7
+neat-python==0.92

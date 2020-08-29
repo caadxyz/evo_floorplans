@@ -19,6 +19,7 @@ if __name__ == '__main__':
         os.makedirs(out)
 
     population = pickle.load(gzip.open(path))
+    print(type(population))
     genomes = population.statistics.best_unique_genomes(10)
 
     scale = 2

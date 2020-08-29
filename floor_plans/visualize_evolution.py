@@ -3,7 +3,9 @@ from __future__ import print_function
 import copy
 import warnings
 
-from neat.statistics import get_species_sizes
+# from neat.statistics import get_species_sizes
+from neat.statistics import StatisticsReporter
+
 
 try:
     import graphviz
@@ -104,9 +106,10 @@ def plot_species(statistics, view=False, filename='speciation.svg'):
         warnings.warn("This display is not available due to a missing optional dependency (matplotlib)")
         return
 
-    species_sizes = get_species_sizes(statistics)
+    # species_sizes = get_species_sizes(statistics)
+    species_sizes = statistics.get_species_sizes()
     num_generations = len(species_sizes)
-    curves = np.array(species_sizes).T
+    curves = np.array(species_sizes).e
 
     fig, ax = plt.subplots()
     ax.stackplot(range(num_generations), *curves)
