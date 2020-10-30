@@ -1,18 +1,14 @@
 import sys
 from floor_plans.math_util import mean
 
-
 def species_max_fitness(species):
     return max([m.fitness for m in species.members])
-
 
 def species_min_fitness(species):
     return min([m.fitness for m in species.members])
 
-
 def species_mean_fitness(species):
     return mean([m.fitness for m in species.members])
-
 
 def species_median_fitness(species):
     fitnesses = [m.fitness for m in species.members]

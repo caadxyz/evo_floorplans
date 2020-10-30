@@ -7,7 +7,9 @@ from floor_plans.genes import NodeGene, ConnectionGene, AttributeGene
 from floor_plans.random_util import weighted_choice
 
 class Genome(object):
-    """ A genome for general recurrent neural networks. """
+    """ A genome for general recurrent neural networks. 
+        一般递归神经网络的基因组。
+    """
     def __init__(self, ID, config, parent1_id, parent2_id, variable_room_types):
         self.ID = ID
         self.config = config

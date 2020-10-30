@@ -102,12 +102,6 @@ for i in range(3):
 spec.add_requirement(gym, stage, 'adjacent')
 spec.add_requirement(cafeteria, kitchen, 'adjacent')
 
-# def ratio_score(a, b):
-#     if a == 0:
-#         return 0
-#     r = (b / a)
-#     return 1.0 / (1.0 + math.exp(-4 * (r-1)))
-
 def ratio_score(a, b):
     if a == 0:
         return 0
@@ -127,7 +121,6 @@ weights = {
     # 'cluster': 1,
     # 'toilets': 1,
     # 'toilet_load': 1,
-
     # 'surface_area': 2,
     # 'window_area': 2,
     # 'fire_escape': 1,
@@ -167,17 +160,13 @@ def create_scores(floor):
     # print('cluster', round(floor.stats['cd'], 4), round(baseline['average_cluster_distance'] / floor.stats['cd'],4))
     # print('toilets', round(floor.stats['td'], 4), round(baseline['toilet_dist'] / floor.stats['td'],4))
     # print('toilet_load', round(floor.stats['ta'], 4), round(baseline['toilet_load'] / floor.stats['ta'],4))
-
     # print('fire_escape', round(floor.stats['fe'], 4), round(baseline['fire_escape_dist'] / floor.stats['fe'],4))
     # print('window_area', floor.stats['wa'], round(baseline['window_area']/ floor.stats['wa'],4))
-
     # print('surface_area', baseline['outside_wall_length'], floor.stats['ol'])
-
 
 def evaluate(genome):
     """ Return a score [0, 1]
     """
-
     try:
         firescapes = 'fire_escape' in weights
         floor = FloorPlan.from_genome(genome, firescapes=firescapes)
@@ -223,9 +212,6 @@ def evaluate(genome):
         print(e,  end='')
         return (None, -99999999)
 
-    # import copy
-    # copy.deepcopy(genome)
-
 scale = 1.0
 view = View(int(750.*scale), int(750.*scale), scale=scale)
 
@@ -254,10 +240,11 @@ if __name__ == '__main__':
     else:
         out_root = os.getcwd()
 
-
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'config.txt')
     config = Config(config_path)
+
+    # 此处初始化了各个房间的信息及相互之间的关系
     config.spec = spec
 
     pop = population.Population(config)
@@ -279,25 +266,21 @@ if __name__ == '__main__':
         weights_file.write(str(weights))
     """
 
+    # 遗传完成并生成优胜者
     winner = pop.statistics.best_genome()
     pickle.dump(winner, open(os.path.join(out_dir,'winner_genome.p'), 'wb'))
     pickle.dump(pop, gzip.open(os.path.join(out_dir,'winner_school_population2.p.gz'), 'wb'))
 
+    # 把graph翻译成平面图
     floorplan = FloorPlan.from_genome(winner)
-
     print('best fitness', winner.fitness)
-
-
     view.draw_floorplan(floorplan)
     view.save(os.path.join(out_dir, 'school_winner.png'))
     plot_stats(pop.statistics, filename=os.path.join(out_dir, 'avg_fitness.svg'))
 
     # todo mahaidong
     # plot_species(pop.statistics, filename=os.path.join(out_dir, 'speciation.svg'))
-
     with open(os.path.join(out_dir,'fitness.txt'), 'w') as fitness_file:
         fitness_file.write(str(winner.fitness))
-
     print('Number of evaluations: {0}'.format(pop.total_evaluations))
-
     view.hold()

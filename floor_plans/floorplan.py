@@ -2,7 +2,6 @@ from __future__ import print_function, division
 import random
 import pickle
 import math
-# from math import atan2, cos, sin, pi
 from collections import defaultdict, namedtuple
 import networkx as nx
 
@@ -233,11 +232,13 @@ class FloorPlan(nx.Graph):
         fix_overlapping(pos) # Prevent overlapping points.
         center(pos, dimensions=(750, 750))
         pos = physics_layout(G, pos, view) # Apply physics simulation.
+
         center(pos, dimensions=(750, 750))
         if 'concave_alpha' in genome.attribute_genes:
             a = genome.attribute_genes['concave_alpha'].value
         else:
             a = 40
+
         cells, debug_data = voronoi_cells(pos, genome.node_genes, a) # Room walls by voronoi tesselation.
         vert_to_id = defaultdict(lambda: len(vert_to_id)) # Map vertices to global indexes.
         rooms = defaultdict(list)
@@ -423,15 +424,9 @@ def genome_to_graph(genome):
         G.add_edge(conn.in_node_id, conn.out_node_id, weight=conn.weight, fixed=conn.fixed)
 
     subgraphs = list(nx.connected_components(G))
-    # print(subgraphs)
-    # print(len(subgraphs))
     if len(subgraphs) != 1:
-        # print(map(list, subgraphs))
         for g1, g2 in pairwise(map(list, subgraphs)):
-            # print(g1[-1], g2[0])
             G.add_edge(g1[-1], g2[0], weight=.25, fixed=False)
-    # if not nx.is_connected(G):
-    #     raise UnconnectedGenomeException()
 
     return G
 
