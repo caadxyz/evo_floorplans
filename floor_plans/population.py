@@ -163,6 +163,7 @@ class Population(object):
             population = []
             for s in self.species:
                 population.extend(s.members)
+            
 
             # Evaluate all individuals in the population using the user-provided function.
             # TODO: Add an option to only evaluate each genome once, to reduce number of

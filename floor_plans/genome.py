@@ -9,22 +9,16 @@ from floor_plans.random_util import weighted_choice
 class Genome(object):
     """ A genome for general recurrent neural networks. 
         一般递归神经网络的基因组。
+        (id, gene) pairs for connection and node gene sets.
     """
     def __init__(self, ID, config, parent1_id, parent2_id, variable_room_types):
         self.ID = ID
         self.config = config
 
-        # (id, gene) pairs for connection and node gene sets.
         self.conn_genes = {}
         self.node_genes = {}
         self.mutateable_nodes = []
-
         self.attribute_genes = {}
-            # 'hallway_alpha': [12, [10, 14]]
-        # }
-        # self.hallway_alpha = 12.0
-        # self.hallway_alpha_bounds = [10., 14]
-        # self.hallway_k = 10.
 
         self.fitnesses = {}
         self.fitness = None
@@ -39,7 +33,6 @@ class Genome(object):
 
     def mutate(self, innovation_indexer):
         """ Mutates this genome """
-        # heat = choice([1, 2, 3])
         events = [
             (.1, self.mutate_add_node),
             (.05, self.mutate_delete_node),
@@ -56,8 +49,11 @@ class Genome(object):
             # (.5, self.mutate_switch_rooms),
             (.2, self.mutate_shuffle_rooms),
         ]
+
+        # heat = choice([1, 2, 3])
         # for i in range(heat):
         #     weighted_choice(events)(innovation_indexer)
+
         for p, e in events:
             if random() < p:
                 e(innovation_indexer)
@@ -370,16 +366,6 @@ class Genome(object):
         for id1 in self.node_genes:
             for id2 in sample(ids.difference([id1]), count):
                 self.connect(id1, id2, innovation_indexer)
-        # assert 0 <= fraction <= 1
-        # all_connections = self.compute_full_connections()
-        # shuffle(all_connections)
-        # num_to_add = int(round(len(all_connections) * fraction))
-        # for input_id, output_id in all_connections[:num_to_add]:
-        #     self.connect(input_id, output_id, innovation_indexer)
-            # weight = random()
-            # innovation_id = innovation_indexer.get_innovation_id(input_id, output_id)
-            # cg = ConnectionGene(innovation_id, input_id, output_id, weight, True)
-            # self.conn_genes[cg.key] = cg
 
     @classmethod
     def create(cls, ID, config, innovation_indexer):
@@ -389,8 +375,6 @@ class Genome(object):
         node_id = 0
 
         name_groups = defaultdict(set)
-
-
 
         # Create node genes based off of rooms in spec.
         for _, room in config.spec.nodes(True):
@@ -408,19 +392,6 @@ class Genome(object):
             c.connect(id1, id2, innovation_indexer, weight, fixed=True)
             connected.append(id1)
             connected.append(id2)
-
-        # for name, group in name_groups.items():
-        #     if len(group) > 1 and name != 'toilet' and name != 'empty':
-        #         for nid1 in group:
-        #             nid2 = choice(list(set(group)-{nid1}))
-        #             connected.append(nid1)
-        #             connected.append(nid2)
-        #             c.connect(nid1, nid2, innovation_indexer, weight=1.0)
-
-        # foo = combinations(set(c.node_genes.keys()) - set(connected), 2)
-        # edges = sample(list(foo), int(len(c.node_genes)))
-        # for i, j in edges:
-        #     c.connect(i, j, innovation_indexer, weight=.1)
 
         # Create random edges.
         genes = list(c.node_genes.keys())

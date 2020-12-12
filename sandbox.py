@@ -4,17 +4,15 @@ import pickle
 from floor_plans.genome import Genome
 from floor_plans.config import Config
 from floor_plans.indexer import Indexer, InnovationIndexer
-
 from floor_plans.visualize import View
 from floor_plans.floorplan import FloorPlan
-from main import evaluate, spec, create_scores
-import numpy as np
-
+from main import evaluate, create_scores
 from floor_plans.hallways import create_hallways
 from floor_plans.hallway_smoothing import smooth
 from floor_plans.hallway_geometry import create_geometry
 from floor_plans import floorplan_statistics as fps
 
+# todo
 def grid_search(floor):
     best_score = 999999999
     best_args = None
@@ -52,20 +50,8 @@ def main(genome, cache=False, save_path=None, scale=1.8):
     view.hold()
 
 if __name__ == '__main__':
-    # new = True
-    new = False
-
-    if new:
-        config = Config('config.txt')
-        config.spec = spec
-        innovation_indexer = InnovationIndexer(0)
-        genome = Genome.create(0, config, innovation_indexer)
-        pickle.dump(genome, open(path, 'wb'))
-    else:
-        path = 'winner_genome.p'
-        genome = pickle.load(open(path, 'rb'))
-
+    genome = pickle.load(open('winner_genome.p', 'rb'))
     main(genome, 
          cache=True, 
          scale=2, 
-         save_path=os.path.join(os.path.dirname(path), 'render.png'))
+         save_path=os.path.join(os.path.dirname("./"), 'render.png'))
