@@ -20,8 +20,8 @@ class Genome(object):
         self.mutateable_nodes = []
 
         self.attribute_genes = {}
-            # 'hallway_alpha': [12, [10, 14]]
-        # }
+
+        # 'hallway_alpha': [12, [10, 14]]
         # self.hallway_alpha = 12.0
         # self.hallway_alpha_bounds = [10., 14]
         # self.hallway_k = 10.
