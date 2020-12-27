@@ -1,7 +1,6 @@
 class Indexer(object):
     def __init__(self, first):
         self.next_id = first
-
     def next(self, result=None):
         '''
         If result is not None, then we return it unmodified.  Otherwise,
@@ -30,5 +29,4 @@ class InnovationIndexer(object):
         if innovation_id is None:
             innovation_id = self.indexer.next()
             self.innovations[in_node_id, out_node_id] = innovation_id
-
         return innovation_id

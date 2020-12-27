@@ -28,8 +28,6 @@ def total_wall_length(floor):
             l -= data['length']
         else:
             l += data['length']
-        # elif not data['inner'] or data['width']:
-        #     l += data['length']
     l += sum(map(polygon.circumfrence, floor.hallway_geometry))
     return l
 
